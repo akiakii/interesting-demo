@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<style>
+body,h1,h2,h3,h4,p,form,ol,ul{margin:0}
+ol,ul{padding:0}
+
+
+html{
+	background:#000;
+}
+html,body{
+	overflow:hidden;
+}
+#dm{
+	width:100%;
+	pointer-events:none;
+}
+#dm-top{
+	text-align:center;
+}
+#dm-bottom{
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+	text-align:center;
+}
+
+#dm span{
+	font:1em \5FAE\8F6F\96C5\9ED1,sans-serif;
+	font-weight:bold;
+	color:#FFF;
+	text-shadow:0 1px 0 #000;
+	white-space:nowrap;
+	max-width:800px;
+	font-size:28px;}
+
+#dm .size-1{font-size:2.5em;}
+#dm .size-2{font-size:2em;}
+#dm .size-5{font-size:1.5em;}
+#dm .size-9{font-size:16px;}
+
+
+#dm .dm-type-left{
+	position:absolute;
+	left:100%;
+	animation:dm-left 50s linear;
+	-webkit-animation:dm-left 50s linear;
+}
+
+
+@keyframes dm-left{
+	to{transform:translateX(-5000px)}
+}
+
+@-webkit-keyframes dm-left{
+	to{-webkit-transform:translateX(-5000px)}
+}
+
+#dm .dm-type-right{
+	position:absolute;z-index:2;right:100%;
+	animation:dm-right 50s linear;
+	-webkit-animation:dm-right 50s linear;}
+
+
+@keyframes dm-right{
+	to{transform:translateX(5000px)}
+}
+
+@-webkit-keyframes dm-right{
+	to{-webkit-transform:translateX(5000px)}
+}
+
+
+#dm .dm-type-top,
+#dm .dm-type-bottom{
+	display:block;
+	margin:0 auto;
+	animation:dm-top 4s linear;
+	-webkit-animation:dm-top 4s linear;
+}
+
+@keyframes dm-top{
+	from{opacity:0;}
+	5%{opacity:1;}
+	95%{opacity:1;}
+	to{opacity:0;}
+}
+
+@-webkit-keyframes dm-top{
+	from{opacity:0;}
+	5%{opacity:1;}
+	95%{opacity:1;}
+	to{opacity:0;}
+}
+
+
+#dm .dm-color-red{color:red}
+#dm .dm-color-blue{color:blue}
+#dm .dm-color-yellow{color:yellow}
+#dm .dm-color-green{color:green}
+
+
+#dm-f{
+	position:absolute;
+	bottom:100px;
+	z-index:3;
+	width:500px;
+	left:50%;
+	margin-left:-250px;
+}
+#dm-f input{
+	width:300px;
+}
+#dm-f select{
+	display:block;
+	margin:0;
+	padding:0;
+	border:0;
+}
+</style>
+<!-- controls -->
+
+
+<div id="dm">
+	<div id="dm-left"></div>
+	<div id="dm-right"></div>
+	<div id="dm-top"></div>
+	<div id="dm-bottom"></div>
+</div>
+<form id="dm-f">
+	<select name="type">
+		<option>left</option>
+		<option>right</option>
+		<option>top</option>
+		<option>bottom</option>
+	</select>
+	<select name="color">
+		<option>white</option>
+		<option>red</option>
+		<option>blue</option>
+		<option>yellow</option>
+		<option>green</option>
+	</select>
+	<input name="text">
+	<button type="submit">提交</button>
+</form>
+<script>window.onload=function(){
+var 
+N=[],
+$=function(id){
+	return document.getElementById(id);
+}
+delDom=function(dom){
+	this.parentNode.removeChild(this);
+},
+addDom=function(parent,dom){
+	 parent.appendChild(dom);
+},
+
+addm=function(o){
+	var 
+	dom=document.createElement('span'), 
+	c=['dm'];
+	
+	c.push('dm-type-'+o.type);
+	c.push('dm-color-'+o.color);
+
+
+	num=o.msg.length/5;
+	if(num<1)
+		num=1;
+	else if(num<2)
+		num=2;
+	else if(num<5)
+		num=5;
+	else
+		num=9;
+
+	c.push('size-'+num);
+	dom.innerHTML=o.msg;
+	dom.className=c.join(' ');
+	dom.xid=o.xid;
+
+	var css=[];
+
+	if(o.type=='left'||o.type=='right')
+		css.push('top:'+(Math.random()*80+5)+'%');
+	dom.style.cssText=css.join(';');
+	dom.addEventListener('webkitAnimationEnd',delDom);
+	dom.addEventListener('animationEnd',delDom);
+	addDom($('dm-'+o.type),dom);
+};
+
+
+$('dm-f').onsubmit=function(e){
+	e.preventDefault();
+	e.stopPropagation();
+	var that=this;
+	addm({
+		msg:that.text.value,
+		type:that.type.value,
+		color:that.color.value
+	});
+
+	that.text.value='';
+};
+}</script>
+</html>
+
+
+
