@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>THIS 进度条</title>
+
+
+
+<style>
+.loading{
+	margin:50px auto;
+	width:300px;
+	font:40px/100px arial;text-indent:80px;
+	background:#fbfbfc;color:#0BF;
+	position:relative;
+}
+.loading:before{
+	content:attr(text);
+}
+.loading:after{
+	content:attr(text);
+	position:absolute;left:0;
+	white-space:nowrap;overflow:hidden;
+	width:0%;transition:width 2.0s ease;
+	background:#0BF;color:#fbfbfc;
+}
+</style>
+
+
+
+
+<div class="loading" text="Loading" id="loading"></div>
+<!-- 下半部分代码为方便演示用 -->
+<style></style>
+<script>
+!function($,s){
+	s=$('style')[1];
+	loading = document.getElementById('loading');
+	window.onload = function(){
+		w=0;
+		while(w<=100){
+		wd=w+'%';
+		console.log(wd);
+		s.innerHTML='.loading:after{width:'+wd+'}';
+		w+=20;
+	}
+	};
+}(function(i){return document.querySelectorAll(i)});
+
+</script>
+
+
+
